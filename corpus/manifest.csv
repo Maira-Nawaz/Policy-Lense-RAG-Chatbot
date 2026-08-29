@@ -1,0 +1,24 @@
+id,title,area,jurisdiction,segment,status,effective_from,effective_to,supersedes,department,confidentiality,filename
+refunds_DE_enterprise_v1,Refund Policy — Enterprise Customers (Germany) [SUPERSEDED],refunds,DE,enterprise,superseded,2022-01-01,2024-12-31,,Finance,internal,refunds_DE_enterprise_v1.md
+refunds_DE_enterprise_v2,Refund Policy — Enterprise Customers (Germany),refunds,DE,enterprise,current,2025-01-01,,refunds_DE_enterprise_v1,Finance,internal,refunds_DE_enterprise_v2.md
+refunds_DE_smb_v1,Refund Policy — SMB / Consumer-Class Customers (Germany),refunds,DE,smb,current,2023-01-01,,,Finance,internal,refunds_DE_smb_v1.md
+refunds_US_enterprise_v1,Refund Policy — Enterprise Customers (United States),refunds,US,enterprise,current,2023-01-01,,,Finance,internal,refunds_US_enterprise_v1.md
+refunds_US_smb_v1,Refund Policy — SMB Customers (United States),refunds,US,smb,current,2023-01-01,,,Finance,internal,refunds_US_smb_v1.md
+refunds_UK_smb_v1,Refund Policy — SMB / Consumer-Class Customers (United Kingdom),refunds,UK,smb,current,2023-01-01,,,Finance,internal,refunds_UK_smb_v1.md
+data_retention_DE_v1,Data Retention Policy (Germany),data_retention,DE,,current,2023-06-01,,,Legal,internal,data_retention_DE_v1.md
+data_retention_US_v1,Data Retention Policy (United States) [SUPERSEDED],data_retention,US,,superseded,2021-01-01,2025-02-28,,Legal,internal,data_retention_US_v1.md
+data_retention_US_v2,Data Retention Policy (United States),data_retention,US,,current,2025-03-01,,data_retention_US_v1,Legal,internal,data_retention_US_v2.md
+data_retention_UK_v1,Data Retention Policy (United Kingdom),data_retention,UK,,current,2023-06-01,,,Legal,internal,data_retention_UK_v1.md
+pto_DE_fulltime_v1,Paid Time Off Policy — Full-Time Employees (Germany),pto,DE,full_time,current,2022-01-01,,,HR,internal,pto_DE_fulltime_v1.md
+pto_US_fulltime_v1,Paid Time Off Policy — Full-Time Employees (United States),pto,US,full_time,current,2023-01-01,,,HR,internal,pto_US_fulltime_v1.md
+pto_UK_fulltime_v1,Paid Time Off Policy — Full-Time Employees (United Kingdom) [SUPERSEDED],pto,UK,full_time,superseded,2021-01-01,2024-12-31,,HR,internal,pto_UK_fulltime_v1.md
+pto_UK_fulltime_v2,Paid Time Off Policy — Full-Time Employees (United Kingdom),pto,UK,full_time,current,2025-01-01,,pto_UK_fulltime_v1,HR,internal,pto_UK_fulltime_v2.md
+pto_UK_contractor_v1,Paid Time Off Policy — Contractors (United Kingdom),pto,UK,contractor,current,2023-01-01,,,HR,internal,pto_UK_contractor_v1.md
+expense_DE_v1,Expense Reimbursement Policy (Germany),expense_reimbursement,DE,,current,2023-01-01,,,Finance,internal,expense_DE_v1.md
+expense_US_v1,Expense Reimbursement Policy (United States),expense_reimbursement,US,,current,2023-01-01,,,Finance,internal,expense_US_v1.md
+expense_UK_v1,Expense Reimbursement Policy (United Kingdom) [SUPERSEDED],expense_reimbursement,UK,,superseded,2021-01-01,2023-12-31,,Finance,internal,expense_UK_v1.md
+expense_UK_v2,Expense Reimbursement Policy (United Kingdom),expense_reimbursement,UK,,current,2024-01-01,,expense_UK_v1,Finance,internal,expense_UK_v2.md
+data_privacy_DE_v1,Data Subject Access Request Policy (Germany) [SUPERSEDED],data_privacy,DE,,superseded,2022-01-01,2024-12-31,,Legal,internal,data_privacy_DE_v1.md
+data_privacy_DE_v2,Data Subject Access Request Policy (Germany),data_privacy,DE,,current,2025-01-01,,data_privacy_DE_v1,Legal,internal,data_privacy_DE_v2.md
+data_privacy_US_v1,Consumer Privacy Request Policy (United States),data_privacy,US,,current,2023-01-01,,,Legal,internal,data_privacy_US_v1.md
+data_privacy_UK_v1,Data Subject Access Request Policy (United Kingdom),data_privacy,UK,,current,2023-01-01,,,Legal,internal,data_privacy_UK_v1.md

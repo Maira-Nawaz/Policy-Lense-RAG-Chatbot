@@ -1,0 +1,362 @@
+{
+  "version": "1.0",
+  "description": "Gold evaluation set for PolicyLens. Each item defines a question, the expected system behaviour, and (where applicable) the correct source document(s). expected_behavior is one of: answer, clarify, refuse.",
+  "items": [
+
+    {
+      "id": "q001",
+      "category": "straightforward_answerable",
+      "question": "What is our refund policy for enterprise customers in Germany?",
+      "jurisdiction_given": "DE",
+      "segment_given": "enterprise",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_DE_enterprise_v2"],
+      "notes": "Must use the CURRENT version, not the superseded v1. This is the flagship example question from the PRD."
+    },
+    {
+      "id": "q002",
+      "category": "version_conflict",
+      "question": "How many days do enterprise customers in Germany have to request a refund?",
+      "jurisdiction_given": "DE",
+      "segment_given": "enterprise",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_DE_enterprise_v2"],
+      "notes": "Correct answer is 14 days (current). A system pulling the superseded doc would incorrectly say 30 days."
+    },
+    {
+      "id": "q003",
+      "category": "version_conflict_explicit_historical",
+      "question": "What was the refund window for German enterprise customers before the 2025 policy change?",
+      "jurisdiction_given": "DE",
+      "segment_given": "enterprise",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_DE_enterprise_v1"],
+      "notes": "Explicit historical question \u2014 correct behaviour is to reference the superseded doc, since it's what's being asked about. Tests that the system doesn't refuse superseded content outright, only prefers current content by default."
+    },
+    {
+      "id": "q004",
+      "category": "straightforward_answerable",
+      "question": "Do SMB customers in Germany get a statutory withdrawal right on refunds?",
+      "jurisdiction_given": "DE",
+      "segment_given": "smb",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_DE_smb_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q005",
+      "category": "straightforward_answerable",
+      "question": "What is the refund policy for enterprise customers in the US?",
+      "jurisdiction_given": "US",
+      "segment_given": "enterprise",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_US_enterprise_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q006",
+      "category": "straightforward_answerable",
+      "question": "Can an SMB customer in the US get a refund on an annual plan?",
+      "jurisdiction_given": "US",
+      "segment_given": "smb",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_US_smb_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q007",
+      "category": "straightforward_answerable",
+      "question": "What is the cancellation window for a UK SMB customer under consumer regulations?",
+      "jurisdiction_given": "UK",
+      "segment_given": "smb",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_UK_smb_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q008",
+      "category": "gap_refusal",
+      "question": "What is the refund policy for enterprise customers in the UK?",
+      "jurisdiction_given": "UK",
+      "segment_given": "enterprise",
+      "expected_behavior": "refuse",
+      "expected_doc_ids": [],
+      "notes": "Deliberate gap \u2014 no UK enterprise refund document exists. System must not fabricate an answer by borrowing from UK SMB or DE enterprise docs."
+    },
+    {
+      "id": "q009",
+      "category": "ambiguous_no_jurisdiction",
+      "question": "What is our refund policy?",
+      "jurisdiction_given": null,
+      "segment_given": null,
+      "expected_behavior": "clarify",
+      "expected_doc_ids": [],
+      "notes": "No jurisdiction or segment given, and refund policy genuinely varies by both. Correct behaviour is to ask for jurisdiction/segment, or explicitly state the answer depends on both and summarise the variants \u2014 NOT to silently pick one."
+    },
+    {
+      "id": "q010",
+      "category": "ambiguous_no_jurisdiction",
+      "question": "How long do customers have to cancel and get their money back?",
+      "jurisdiction_given": null,
+      "segment_given": null,
+      "expected_behavior": "clarify",
+      "expected_doc_ids": [],
+      "notes": "Same ambiguity as q009, phrased differently, to test robustness of the ambiguity detector rather than keyword matching on 'refund policy'."
+    },
+
+    {
+      "id": "q011",
+      "category": "straightforward_answerable",
+      "question": "How long do we retain customer account data in the US after account closure?",
+      "jurisdiction_given": "US",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["data_retention_US_v2"],
+      "notes": "Must use current (3 years), not superseded (7 years)."
+    },
+    {
+      "id": "q012",
+      "category": "version_conflict",
+      "question": "Is support ticket data in the US kept indefinitely?",
+      "jurisdiction_given": "US",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["data_retention_US_v2"],
+      "notes": "Correct answer is no (24 months) under current policy; the superseded policy said indefinitely. Tests whether the system surfaces the superseded claim by mistake."
+    },
+    {
+      "id": "q013",
+      "category": "straightforward_answerable",
+      "question": "How long must we keep financial records under German law?",
+      "jurisdiction_given": "DE",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["data_retention_DE_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q014",
+      "category": "straightforward_answerable",
+      "question": "What's the retention period for financial records under UK rules?",
+      "jurisdiction_given": "UK",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["data_retention_UK_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q015",
+      "category": "gap_refusal_out_of_corpus_jurisdiction",
+      "question": "What is our data retention policy in France?",
+      "jurisdiction_given": "FR",
+      "segment_given": null,
+      "expected_behavior": "refuse",
+      "expected_doc_ids": [],
+      "notes": "France is not a jurisdiction covered anywhere in the corpus. Tests whether the system incorrectly generalises from DE/EU GDPR content to 'answer for France too'."
+    },
+
+    {
+      "id": "q016",
+      "category": "straightforward_answerable",
+      "question": "How many days of paid annual leave do full-time employees get in Germany?",
+      "jurisdiction_given": "DE",
+      "segment_given": "full_time",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["pto_DE_fulltime_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q017",
+      "category": "gap_refusal",
+      "question": "How much PTO do German contractors get?",
+      "jurisdiction_given": "DE",
+      "segment_given": "contractor",
+      "expected_behavior": "refuse",
+      "expected_doc_ids": [],
+      "notes": "Deliberate gap \u2014 no DE contractor PTO document exists. System should explain contractors are governed by individual agreements, not fabricate a day count by analogy to full-time policy."
+    },
+    {
+      "id": "q018",
+      "category": "gap_refusal",
+      "question": "What is the PTO policy for contractors in the US?",
+      "jurisdiction_given": "US",
+      "segment_given": "contractor",
+      "expected_behavior": "refuse",
+      "expected_doc_ids": [],
+      "notes": "Deliberate gap."
+    },
+    {
+      "id": "q019",
+      "category": "straightforward_answerable",
+      "question": "How much PTO do full-time employees get in the US?",
+      "jurisdiction_given": "US",
+      "segment_given": "full_time",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["pto_US_fulltime_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q020",
+      "category": "version_conflict",
+      "question": "How many days of annual leave do UK full-time employees get?",
+      "jurisdiction_given": "UK",
+      "segment_given": "full_time",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["pto_UK_fulltime_v2"],
+      "notes": "Must use current (27 days), not superseded (25 days)."
+    },
+    {
+      "id": "q021",
+      "category": "version_conflict",
+      "question": "How many days of unused UK annual leave can be carried into the next year?",
+      "jurisdiction_given": "UK",
+      "segment_given": "full_time",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["pto_UK_fulltime_v2"],
+      "notes": "Current carry-over is 10 days, superseded was 5 days."
+    },
+    {
+      "id": "q022",
+      "category": "straightforward_answerable",
+      "question": "How is holiday pay handled for UK contractors working through an umbrella company?",
+      "jurisdiction_given": "UK",
+      "segment_given": "contractor",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["pto_UK_contractor_v1"],
+      "notes": ""
+    },
+
+    {
+      "id": "q023",
+      "category": "straightforward_answerable",
+      "question": "How long do I have to submit an expense claim in Germany?",
+      "jurisdiction_given": "DE",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["expense_DE_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q024",
+      "category": "straightforward_answerable",
+      "question": "What receipt is required for expense claims over $0 under the US accountable plan rules, and what's the submission deadline?",
+      "jurisdiction_given": "US",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["expense_US_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q025",
+      "category": "version_conflict",
+      "question": "Can I mail paper receipts to Finance for a UK expense claim?",
+      "jurisdiction_given": "UK",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["expense_UK_v2"],
+      "notes": "Current policy no longer accepts mailed paper receipts (digital app submission only); superseded policy required mailing them. Tests whether the system flags the practice as discontinued rather than confirming it's allowed."
+    },
+    {
+      "id": "q026",
+      "category": "straightforward_answerable",
+      "question": "What's the threshold above which a UK expense claim needs manager approval?",
+      "jurisdiction_given": "UK",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["expense_UK_v2"],
+      "notes": ""
+    },
+
+    {
+      "id": "q027",
+      "category": "version_conflict",
+      "question": "How should a data subject access request from a German individual be submitted?",
+      "jurisdiction_given": "DE",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["data_privacy_DE_v2"],
+      "notes": "Current process requires the Privacy Request Portal; superseded process allowed emailing any employee. Tests whether system surfaces the outdated intake path."
+    },
+    {
+      "id": "q028",
+      "category": "straightforward_answerable",
+      "question": "How long do we have to respond to a subject access request in the UK?",
+      "jurisdiction_given": "UK",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["data_privacy_UK_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q029",
+      "category": "straightforward_answerable",
+      "question": "How many days does a US consumer privacy request response have under our policy?",
+      "jurisdiction_given": "US",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["data_privacy_US_v1"],
+      "notes": ""
+    },
+    {
+      "id": "q030",
+      "category": "ambiguous_no_jurisdiction",
+      "question": "How long does it take to respond to a privacy request?",
+      "jurisdiction_given": null,
+      "segment_given": null,
+      "expected_behavior": "clarify",
+      "expected_doc_ids": [],
+      "notes": "DE/UK say 1 month (extendable), US says 45 days \u2014 different enough that a single silent answer would be misleading. Should clarify or summarise both."
+    },
+
+    {
+      "id": "q031",
+      "category": "gap_refusal_out_of_corpus_area",
+      "question": "What is our policy on remote work stipends?",
+      "jurisdiction_given": null,
+      "segment_given": null,
+      "expected_behavior": "refuse",
+      "expected_doc_ids": [],
+      "notes": "No policy area in the corpus covers this at all. Tests whether the system refuses cleanly rather than retrieving the nearest tangentially-related document (e.g. expense policy) and answering from it anyway."
+    },
+    {
+      "id": "q032",
+      "category": "adversarial_distractor",
+      "question": "Since German enterprise refund terms changed in 2025, does that also mean the German SMB refund terms changed?",
+      "jurisdiction_given": "DE",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_DE_smb_v1", "refunds_DE_enterprise_v2"],
+      "notes": "Tests whether the system incorrectly assumes changes to one segment's policy apply to the other segment, versus correctly checking both documents and reporting the SMB policy is a separate, unaffected document."
+    },
+    {
+      "id": "q033",
+      "category": "adversarial_distractor",
+      "question": "Our German enterprise contract predates 2025 \u2014 does the old 30-day refund window still apply to us?",
+      "jurisdiction_given": "DE",
+      "segment_given": "enterprise",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["refunds_DE_enterprise_v1", "refunds_DE_enterprise_v2"],
+      "notes": "Genuinely nuanced: the current policy applies to invoices dated on/after 1 Jan 2025, but doesn't say existing contracts are grandfathered. Correct answer should flag this ambiguity rather than confidently asserting either way \u2014 counts as correct if it surfaces both documents and the ambiguity."
+    },
+    {
+      "id": "q034",
+      "category": "straightforward_answerable",
+      "question": "Do California employees get PTO payout at termination?",
+      "jurisdiction_given": "US",
+      "segment_given": "full_time",
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["pto_US_fulltime_v1"],
+      "notes": "Tests retrieval of a specific clause (California carve-out) embedded within a broader US document, not just document-level matching."
+    },
+    {
+      "id": "q035",
+      "category": "straightforward_answerable",
+      "question": "What VAT threshold triggers the receipt requirement for German expense claims?",
+      "jurisdiction_given": "DE",
+      "segment_given": null,
+      "expected_behavior": "answer",
+      "expected_doc_ids": ["expense_DE_v1"],
+      "notes": ""
+    }
+  ]
+}

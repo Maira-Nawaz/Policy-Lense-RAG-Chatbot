@@ -1,0 +1,20 @@
+[
+  {
+    "area": "refunds",
+    "jurisdiction": "UK",
+    "segment": "enterprise",
+    "reason": "No distinct UK enterprise refund policy document exists."
+  },
+  {
+    "area": "pto",
+    "jurisdiction": "DE",
+    "segment": "contractor",
+    "reason": "German contractors are governed by individual service agreements, not a general PTO policy."
+  },
+  {
+    "area": "pto",
+    "jurisdiction": "US",
+    "segment": "contractor",
+    "reason": "No US contractor PTO document exists."
+  }
+]

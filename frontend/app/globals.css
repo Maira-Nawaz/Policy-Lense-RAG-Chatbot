@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+  /* Tells the browser to use its light UI variants for native controls
+     (select dropdown arrows, scrollbars, autofill) regardless of system theme. */
+  color-scheme: light;
+}
