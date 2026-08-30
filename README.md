@@ -2,7 +2,7 @@
 
 **An internal RAG (Retrieval-Augmented Generation) assistant that answers company policy questions — grounded in real documents, version-aware, jurisdiction-aware, and honest about what it doesn't know.**
 
-> 📸 **Screenshot needed:** Hero screenshot of the chat interface with a real answered question (e.g. the Germany enterprise refund example)
+https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/home-page.png
 
 ---
 
