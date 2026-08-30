@@ -433,6 +433,8 @@ Built with the App Router, TypeScript, and Tailwind CSS.
 
 **Visual design:** went through several iterations (dark navy → light SaaS → a final light theme with an indigo accent, a light-neutral sidebar, and a compact two-line top bar) — all implemented via semantic Tailwind color tokens defined once and swapped centrally, rather than hardcoded colors scattered through components.
 
+![Hoem Page](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/home-page.png)
+
 
 ---
 
@@ -442,7 +444,6 @@ Built with the App Router, TypeScript, and Tailwind CSS.
 - Threaded through the full chain: generation call → `rag_pipeline.py` → `query_logs.estimated_cost_usd` → API response → frontend display → `run_eval.py`'s `eval_runs.total_cost_usd`.
 - **`backfill_costs.py`** — a one-time script that retroactively computed costs for queries and eval runs that were logged before cost tracking was fully wired up, so historical data isn't permanently blank.
 
-> 📸 **Screenshot needed:** A chat response showing a real computed cost figure
 
 ---
 
@@ -507,9 +508,9 @@ Visit `http://localhost:3000`.
 - **Frontend**: deployed to Vercel, with `Root Directory` set to `frontend`
 - **Auth**: Supabase's Redirect URLs configuration must include the deployed frontend's domain
 
-Live demo: `[add deployed URL here]`
+Live demo: https://policy-lense-rag-chatbot-v3py-mu.vercel.app/signup
 
-> 📸 **Screenshot needed:** The deployed app running at its live URL
+![Deployed App](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/deployed-app.png)
 
 ---
 
