@@ -39,7 +39,7 @@ A naive "chat with your documents" tool will confidently answer using whichever 
 
 **PolicyLens is built specifically to handle this class of problem well:** it prefers the current version of a policy over a superseded one, it respects jurisdiction and customer-segment boundaries, and — critically — it **refuses to answer** rather than guess when no correct document exists for what's being asked.
 
-> 📸 **Screenshot needed:** An example of the system correctly refusing (a "gap" question with no matching policy)
+![Gap](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/refusal-example.png)
 
 ---
 
@@ -57,7 +57,7 @@ PolicyLens:
 5. **Forces a refusal** if the generated answer doesn't actually cite any retrieved document (a safeguard against silent hallucination)
 6. Logs everything — the question, the answer, which documents were used, cost, latency — for every single query
 
-> 📸 **Screenshot needed:** A version-conflict example (question answered using the *current* policy, not an outdated one)
+![Version Conflict](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/version-conflict-example.png)
 
 ---
 
@@ -65,28 +65,27 @@ PolicyLens:
 
 ```
                      ┌─────────────────────┐
-                     │   Next.js Frontend   │
-                     │   (Vercel)           │
-                     └──────────┬───────────┘
+                     │   Next.js Frontend  │
+                     │   (Vercel)          │
+                     └──────────┬──────────┘
                                 │ HTTPS
                      ┌──────────▼───────────┐
-                     │   FastAPI Backend     │
-                     │   (Render / Railway)  │
+                     │   FastAPI Backend    │
+                     │   (Render / Railway) │
                      └──────────┬───────────┘
                                 │
               ┌─────────────────┼─────────────────┐
               │                 │                 │
    ┌──────────▼─────────┐  ┌────▼─────┐   ┌───────▼────────┐
-   │  Supabase           │  │  Gemini   │   │  Cross-encoder │
-   │  (Postgres +        │  │  (embed + │   │  reranker      │
-   │   pgvector + Auth)  │  │  generate │   │  (local, CPU)  │
-   └──────────────────────┘  │  + judge) │   └────────────────┘
-                              └───────────┘
+   │  Supabase          │  │  Gemini  │   │  Cross-encoder │
+   │  (Postgres +       │  │  (embed +│   │  reranker      │
+   │   pgvector + Auth) │  │  generate│   │  (local, CPU)  │
+   └────────────────────┘  │  + judge)│   └────────────────┘
+                           └──────────┘
 ```
 
 **Design principle:** every model call (embedding, generation, judging) goes through a provider-agnostic interface, so swapping Gemini for a different provider later is a configuration change, not a rewrite.
 
-> 📸 **Screenshot needed:** (optional) a cleaner version of this diagram, e.g. drawn in Excalidraw or similar
 
 ---
 
@@ -120,7 +119,7 @@ Built before any AI/retrieval code — because every later tuning decision (chun
   - `expected_doc_ids`: the correct source document(s), where applicable
   - `category`: `straightforward_answerable`, `version_conflict`, `gap_refusal`, `ambiguous_no_jurisdiction`, `adversarial_distractor`, etc.
 
-> 📸 **Screenshot needed:** A sample policy document with its YAML front-matter visible in the editor
+![Sample Policy](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/sample%20policy-document.png)
 
 ---
 
@@ -140,7 +139,7 @@ python ingest.py
 python ingest.py --only <document_id>   # ingest a single document, for testing
 ```
 
-> 📸 **Screenshot needed:** Terminal output of a successful `ingest.py` run showing all 23 documents processed
+![Terminal Output](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/terminal-output.png)
 
 ---
 
@@ -304,7 +303,9 @@ $$;
 | `migration_003_add_conversation_id.sql` | Added `conversation_id` to group individual queries into threaded conversations |
 | `migration_004_*.sql` | Added `archived`, `reported`, `report_reason` columns for conversation management features |
 
-> 📸 **Screenshot needed:** Supabase Table Editor showing the `documents` and `chunks` tables populated
+![Chunks](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/chunks.png)
+![Doc1](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/doc1.png)
+![Doc2](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/doc2.png)
 
 ---
 
@@ -328,7 +329,8 @@ A manual CLI test harness (`test_query.py`) exists for exercising this pipeline 
 python test_query.py "What is our refund policy for enterprise customers in Germany?" --jurisdiction DE --segment enterprise --debug
 ```
 
-> 📸 **Screenshot needed:** `test_query.py --debug` output showing reranked candidate scores
+![Test Query](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/test_query1.png)
+![Test Query](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/test-query2.png)
 
 ---
 
@@ -358,8 +360,7 @@ python run_eval.py                # full 35-item run
 python run_eval.py --limit 5       # quick partial run for iteration
 ```
 
-> 📸 **Screenshot needed:** Terminal output of a full `run_eval.py` run showing the category breakdown
-> 📸 **Screenshot needed:** The Metrics dashboard page showing eval run history and trend deltas
+![Evaluation Metric](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/evaluation-metrics.png)
 
 ---
 
@@ -386,8 +387,7 @@ A global exception handler ensures unhandled server errors still return proper C
 
 Interactive API docs are auto-generated at `/docs` (Swagger UI) — useful for manually testing endpoints without a frontend.
 
-> 📸 **Screenshot needed:** The `/docs` Swagger UI page
-> 📸 **Screenshot needed:** A successful `/query` response in Swagger UI
+![Backend](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/backend1.png)
 
 ---
 
@@ -399,8 +399,8 @@ Uses **Supabase Auth** end-to-end — no separate auth service or hand-rolled JW
 - Every data-access endpoint scopes its queries by the authenticated user's ID, so one user never sees another's conversations or feedback.
 - Frontend: `/login` and `/signup` pages, an `AuthContext` holding the current session, and a `RequireAuth` wrapper that redirects unauthenticated visitors before any protected content renders.
 
-> 📸 **Screenshot needed:** The login page
-> 📸 **Screenshot needed:** The signup page
+![Sign up](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/sign-up-page.png)
+![Sign in](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/login-page.png)
 
 ---
 
@@ -433,10 +433,6 @@ Built with the App Router, TypeScript, and Tailwind CSS.
 
 **Visual design:** went through several iterations (dark navy → light SaaS → a final light theme with an indigo accent, a light-neutral sidebar, and a compact two-line top bar) — all implemented via semantic Tailwind color tokens defined once and swapped centrally, rather than hardcoded colors scattered through components.
 
-> 📸 **Screenshot needed:** Full chat interface with an example-question empty state
-> 📸 **Screenshot needed:** A completed answer with citations, feedback buttons, and cost/latency shown
-> 📸 **Screenshot needed:** The history sidebar with grouped/pinned conversations
-> 📸 **Screenshot needed:** The Metrics dashboard
 
 ---
 
