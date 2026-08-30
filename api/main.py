@@ -49,10 +49,18 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
     Catching it here and returning a normal JSONResponse lets it flow back
     through the middleware stack properly, so the browser sees the real
     error instead of a confusing CORS message.
+
+    In production this still wasn't enough -- responses built inside an
+    exception handler run *after* CORSMiddleware's own response-wrapping in
+    this Starlette version, so they came back with no CORS headers at all
+    and the browser reported them as CORS failures anyway. Setting the
+    header directly here guarantees it's present regardless of middleware
+    ordering.
     """
     return JSONResponse(
         status_code=500,
         content={"error": "internal_server_error", "detail": str(exc)},
+        headers={"Access-Control-Allow-Origin": "*"},
     )
 
 
