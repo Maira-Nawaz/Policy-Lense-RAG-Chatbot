@@ -39,7 +39,7 @@ A naive "chat with your documents" tool will confidently answer using whichever 
 
 **PolicyLens is built specifically to handle this class of problem well:** it prefers the current version of a policy over a superseded one, it respects jurisdiction and customer-segment boundaries, and — critically — it **refuses to answer** rather than guess when no correct document exists for what's being asked.
 
-![Gap](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/refusal-example.png)
+![Gap](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/needs-clarification.png)
 
 ---
 
