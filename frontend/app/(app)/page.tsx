@@ -30,8 +30,6 @@ function historyItemToExchange(item: HistoryItem): Exchange {
   return {
     id: `history-${item.id}`,
     question: item.query_text,
-    jurisdiction: item.jurisdiction_given,
-    segment: item.segment_given,
     jurisdictionLabel: item.jurisdiction_given ? JURISDICTION_LABELS[item.jurisdiction_given] ?? item.jurisdiction_given : "",
     segmentLabel: item.segment_given ?? "",
     loading: false,
@@ -99,17 +97,25 @@ export default function ChatPage() {
 
   const busy = exchanges.some((exchange) => exchange.loading);
 
-  async function runQuery(exchangeId: string, question: string, jurisdiction: string | null, segment: string | null) {
+  async function runQuery(exchangeId: string, question: string) {
     try {
       const response = await postQuery({
         question,
-        jurisdiction,
-        segment,
         conversation_id: activeConversationId,
       });
+      // jurisdictionLabel/segmentLabel are only known once the backend tells
+      // us what it extracted from the question -- set them here rather than
+      // at submit time, so the tag under the question bubble shows what the
+      // system actually understood, not something guessed client-side.
+      const jurisdictionLabel = response.jurisdiction_used
+        ? JURISDICTION_LABELS[response.jurisdiction_used] ?? response.jurisdiction_used
+        : "";
+      const segmentLabel = response.segment_used ?? "";
       setExchanges((prev) =>
         prev.map((exchange) =>
-          exchange.id === exchangeId ? { ...exchange, loading: false, error: null, response } : exchange,
+          exchange.id === exchangeId
+            ? { ...exchange, loading: false, error: null, response, jurisdictionLabel, segmentLabel }
+            : exchange,
         ),
       );
     } catch (err) {
@@ -120,7 +126,7 @@ export default function ChatPage() {
     }
   }
 
-  async function handleSubmit(question: string, jurisdiction: string | null, segment: string | null) {
+  async function handleSubmit(question: string) {
     const id = newId();
 
     setExchanges((prev) => [
@@ -128,17 +134,15 @@ export default function ChatPage() {
       {
         id,
         question,
-        jurisdiction,
-        segment,
-        jurisdictionLabel: jurisdiction ? JURISDICTION_LABELS[jurisdiction] ?? jurisdiction : "",
-        segmentLabel: segment ?? "",
+        jurisdictionLabel: "",
+        segmentLabel: "",
         loading: true,
         error: null,
         response: null,
       },
     ]);
 
-    await runQuery(id, question, jurisdiction, segment);
+    await runQuery(id, question);
   }
 
   function handleRetry(exchangeId: string) {
@@ -150,7 +154,7 @@ export default function ChatPage() {
         exchange.id === exchangeId ? { ...exchange, loading: true, error: null, response: null } : exchange,
       ),
     );
-    runQuery(exchangeId, target.question, target.jurisdiction, target.segment);
+    runQuery(exchangeId, target.question);
   }
 
   // The sidebar (which now lives in the shared layout) sets
@@ -180,7 +184,7 @@ export default function ChatPage() {
         {exchanges.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center px-4 text-center text-sm text-ink-faint">
             {welcomeName && <p className="mb-1.5 text-xl font-semibold text-ink">Welcome, {welcomeName}</p>}
-            <p>Tip: including a jurisdiction and segment gets you the most precise answer.</p>
+            <p>Tip: mentioning a country and customer segment in your question gets you the most precise answer.</p>
             <ExampleQuestions onSelect={handleSubmit} />
           </div>
         ) : (

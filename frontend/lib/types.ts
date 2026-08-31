@@ -4,8 +4,9 @@ export type Behavior = "answer" | "clarify" | "refuse" | "error";
 
 export interface QueryRequestBody {
   question: string;
-  jurisdiction?: string | null;
-  segment?: string | null;
+  // No jurisdiction/segment here -- the backend extracts them from the
+  // question text itself (see api/main.py's /query handler and
+  // extraction.py). See Exchange below for how the resolved values come back.
   department?: string | null;
   conversation_id?: string | null;
 }
@@ -19,6 +20,10 @@ export interface QueryResult {
   query_log_id: string | null;
   // Always null until rag_pipeline computes a real cost -- see CostLatencyStats.
   estimated_cost_usd: number | null;
+  // Whichever jurisdiction/segment the backend actually used -- extracted
+  // from the question text. Null means neither was detected.
+  jurisdiction_used: string | null;
+  segment_used: string | null;
 }
 
 export interface FeedbackRequestBody {
@@ -70,10 +75,11 @@ export interface EvalRun {
 export interface Exchange {
   id: string;
   question: string;
-  // Raw codes (e.g. "DE"/"enterprise"), kept alongside the display labels
-  // below so Retry can re-send the exact same request.
-  jurisdiction: string | null;
-  segment: string | null;
+  // Display labels only -- there's no user-set jurisdiction/segment to carry
+  // forward for Retry any more; a retry just re-sends the same question text,
+  // and extraction reruns on it deterministically. Populated once the
+  // response comes back (from jurisdiction_used/segment_used), or from
+  // jurisdiction_given/segment_given when reconstructed from history.
   jurisdictionLabel: string;
   segmentLabel: string;
   loading: boolean;

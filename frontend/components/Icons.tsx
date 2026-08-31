@@ -28,18 +28,6 @@ export function PlusIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export function SlidersIcon({ className = "h-4 w-4" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className={className} aria-hidden="true">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M10.5 6h9.75M3.75 6h3.75m0 0a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0ZM3.75 18h9.75m6.75 0h-3.75m0 0a1.875 1.875 0 1 1 3.75 0 1.875 1.875 0 0 1-3.75 0ZM3.75 12h13.5m3-0h-3.75m0 0a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Z"
-      />
-    </svg>
-  );
-}
-
 export function ClockIcon({ className = "h-4 w-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className={className} aria-hidden="true">

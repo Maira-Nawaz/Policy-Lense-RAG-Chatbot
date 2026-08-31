@@ -21,6 +21,7 @@ from supabase import create_client
 
 import rag_pipeline
 from config import get_settings
+from extraction import extract_jurisdiction_segment
 
 ALLOWED_FEEDBACK_VALUES = {"thumbs_up", "thumbs_down"}
 CONVERSATION_TITLE_MAX_LENGTH = 60
@@ -70,6 +71,11 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 
 class QueryRequest(BaseModel):
     question: str
+    # The frontend no longer sends these -- it relies entirely on the /query
+    # handler extracting them from the question's own wording (see
+    # extract_jurisdiction_segment). Left here (rather than removed) so a
+    # direct API caller can still override either one explicitly; whichever
+    # value ends up used either way is echoed back in QueryResponse.
     jurisdiction: Optional[str] = None
     segment: Optional[str] = None
     department: Optional[str] = None
@@ -91,6 +97,12 @@ class QueryResponse(BaseModel):
     # gap). Included so the frontend can show a real number the moment cost
     # tracking exists, without another round of plumbing.
     estimated_cost_usd: Optional[float] = None
+    # Whichever jurisdiction/segment actually got used -- either the caller's
+    # explicit value, or whatever extract_jurisdiction_segment() picked up
+    # from the question text. Lets the frontend show what the system
+    # understood without maintaining its own dropdown state.
+    jurisdiction_used: Optional[str] = None
+    segment_used: Optional[str] = None
 
 
 class FeedbackRequest(BaseModel):
@@ -224,11 +236,18 @@ def health():
 
 @app.post("/query", response_model=QueryResponse)
 def query(request: QueryRequest, current_user: Dict[str, Any] = Depends(get_current_user)):
+    # Per-field fallback: only extract whichever of jurisdiction/segment the
+    # caller didn't already supply explicitly, so an explicit value (from a
+    # direct API caller) always wins over what we'd guess from the text.
+    extracted = extract_jurisdiction_segment(request.question)
+    jurisdiction = request.jurisdiction or extracted["jurisdiction"]
+    segment = request.segment or extracted["segment"]
+
     try:
         result = rag_pipeline.answer_query(
             request.question,
-            jurisdiction=request.jurisdiction,
-            segment=request.segment,
+            jurisdiction=jurisdiction,
+            segment=segment,
             department=request.department,
             user_id=current_user["id"],
             conversation_id=request.conversation_id,
@@ -250,6 +269,8 @@ def query(request: QueryRequest, current_user: Dict[str, Any] = Depends(get_curr
         latency_ms=result.get("latency_ms", 0),
         query_log_id=result.get("query_log_id"),
         estimated_cost_usd=result.get("estimated_cost_usd"),
+        jurisdiction_used=jurisdiction,
+        segment_used=segment,
     )
 
 
