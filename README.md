@@ -360,6 +360,9 @@ python run_eval.py                # full 35-item run
 python run_eval.py --limit 5       # quick partial run for iteration
 ```
 
+![Eval-test1](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/eval-test1.png)
+![Eval-test2](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/eval-test2.png)
+![Eval-test3](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/eval-test3.png)
 ![Evaluation Metric](https://github.com/Maira-Nawaz/Policy-Lense-RAG-Chatbot/blob/main/assets/evaluation-metrics.png)
 
 ---
