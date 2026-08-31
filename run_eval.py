@@ -240,8 +240,11 @@ def _aggregate(run_results):
     answered = [r for r in run_results if r["actual_behavior"] == "answer"]
     graded = [r for r in answered if r["groundedness"] and r["groundedness"]["score"] is not None]
 
-    precisions = [r["retrieval_score"]["precision"] for r in answerable]
-    recalls = [r["retrieval_score"]["recall"] for r in answerable]
+    # retrieval_score is None for items that hit a harness-level system failure
+    # (e.g. a transient network error) before retrieval could even run -- skip
+    # those rather than let one flaky item crash the whole run's aggregation.
+    precisions = [r["retrieval_score"]["precision"] for r in answerable if r["retrieval_score"]]
+    recalls = [r["retrieval_score"]["recall"] for r in answerable if r["retrieval_score"]]
     latencies = [r["result"]["latency_ms"] for r in run_results if r["result"].get("latency_ms") is not None]
     # Each run_result["result"] is exactly the dict answer_query() returned for
     # that item, which is also what got written to that item's query_logs row
